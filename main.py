@@ -1,7 +1,6 @@
 import os
 import re
 import argparse
-from mutagen import File
 import mutagen
 
 # Define filter array for custom words/characters to remove from metadata fields
