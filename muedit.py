@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import argparse
 from colorama import Fore, Style
 from mutagen import File
 
@@ -45,11 +46,17 @@ def update_metadata(filepath, title=None, album=None, artist=None):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print(f"Usage: python {sys.argv[0]} <path_to_music_or_folder>")
+    parser = argparse.ArgumentParser(
+        description="Edit metadata of music files interactively.")
+    parser.add_argument(
+        "path", help="Path to the music file or folder containing music files")
+    args = parser.parse_args()
+
+    if not os.path.exists(args.path):
+        print(f"{Fore.RED}The provided path does not exist.{Style.RESET_ALL}")
         sys.exit(1)
 
-    music_files = get_music_files(sys.argv[1])
+    music_files = get_music_files(args.path)
     for music_file in music_files:
         metadata = display_metadata(music_file)
 
