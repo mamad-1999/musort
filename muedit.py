@@ -50,6 +50,8 @@ def main():
         description="Edit metadata of music files interactively.")
     parser.add_argument(
         "path", help="Path to the music file or folder containing music files")
+    parser.add_argument("--sort", action="store_true",
+                        help="Sort files after editing by calling musort.py")
     args = parser.parse_args()
 
     if not os.path.exists(args.path):
@@ -73,6 +75,13 @@ def main():
             f"Enter Artist [{metadata['artist']}]: ").strip() or metadata['artist']
 
         update_metadata(music_file, title, album, artist)
+
+    # Call musort.py if --sort option is enabled
+    if args.sort:
+        sort_cmd = ["python", "musort.py", args.path,
+                    "-f", "artist.title", "-s", "-"]
+        subprocess.run(sort_cmd)
+        print(f"{Fore.BLUE}Files sorted with musort.py{Style.RESET_ALL}")
 
 
 if __name__ == "__main__":
